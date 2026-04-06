@@ -1,37 +1,80 @@
+import { useMemo, useState } from 'react';
+
+const ROW_LIMIT = 12;
+
 function DataTable({ data }) {
+  const [query, setQuery] = useState('');
+
+  const filteredRows = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
+
+    if (!normalizedQuery) {
+      return data.slice(0, ROW_LIMIT);
+    }
+
+    return data
+      .filter((title) => title.title.toLowerCase().includes(normalizedQuery))
+      .slice(0, ROW_LIMIT);
+  }, [data, query]);
+
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden mb-10">
-      <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
-        <h2 className="text-lg font-bold text-gray-800">Sampled Weather Records</h2>
-        <span className="text-xs text-gray-400 font-medium">Showing top 10 rows</span>
+    <section className="rounded-[30px] border border-white/60 bg-white/88 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur">
+      <div className="flex flex-col gap-4 border-b border-slate-200/80 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <div>
+          <h2 className="text-xl font-semibold text-slate-900">Catalog Table</h2>
+          <p className="mt-1 text-sm text-slate-500">
+            Search by title, capped at {ROW_LIMIT} visible rows.
+          </p>
+        </div>
+
+        <label className="block">
+          <span className="sr-only">Search by title</span>
+          <input
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search title..."
+            className="w-full rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 outline-none transition focus:border-rose-400 focus:ring-4 focus:ring-rose-100 sm:w-72"
+          />
+        </label>
       </div>
+
       <div className="overflow-x-auto">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="text-xs font-bold text-gray-400 uppercase border-b border-gray-100 bg-gray-50/30">
-              <th className="px-6 py-4">Date</th>
-              <th className="px-6 py-4">Temp (°C)</th>
-              <th className="px-6 py-4">Humidity</th>
-              <th className="px-6 py-4">Condition</th>
+        <table className="min-w-full text-left text-sm">
+          <thead className="bg-slate-950 text-xs uppercase tracking-[0.2em] text-slate-300">
+            <tr>
+              <th className="px-5 py-4 font-medium sm:px-6">Title</th>
+              <th className="px-5 py-4 font-medium sm:px-6">Type</th>
+              <th className="px-5 py-4 font-medium sm:px-6">Country</th>
+              <th className="px-5 py-4 font-medium sm:px-6">Year</th>
+              <th className="px-5 py-4 font-medium sm:px-6">Rating</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
-            {data.slice(0, 10).map((row, i) => (
-              <tr key={i} className="hover:bg-gray-50/80 transition-colors">
-                <td className="px-6 py-4 text-sm text-gray-600 font-medium">{row.date.toLocaleDateString()}</td>
-                <td className="px-6 py-4 text-sm font-black text-gray-900">{row.temperature.toFixed(1)}</td>
-                <td className="px-6 py-4 text-sm text-gray-500">{row.humidity}</td>
-                <td className="px-6 py-4 text-sm">
-                  <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-[10px] font-bold uppercase tracking-wider border border-blue-100">
-                    {row.condition}
+          <tbody className="divide-y divide-slate-200/80">
+            {filteredRows.map((row) => (
+              <tr key={row.showId} className="bg-white/60 transition hover:bg-rose-50/70">
+                <td className="px-5 py-4 font-medium text-slate-900 sm:px-6">{row.title}</td>
+                <td className="px-5 py-4 text-slate-600 sm:px-6">{row.type}</td>
+                <td className="px-5 py-4 text-slate-600 sm:px-6">{row.country}</td>
+                <td className="px-5 py-4 text-slate-600 sm:px-6">{row.releaseYear}</td>
+                <td className="px-5 py-4 sm:px-6">
+                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+                    {row.rating}
                   </span>
                 </td>
               </tr>
             ))}
+            {filteredRows.length === 0 && (
+              <tr>
+                <td colSpan="5" className="px-5 py-8 text-center text-sm text-slate-500 sm:px-6">
+                  No titles match the current search.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
-    </div>
+    </section>
   );
 }
 

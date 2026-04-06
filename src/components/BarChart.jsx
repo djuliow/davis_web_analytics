@@ -3,34 +3,51 @@ import CanvasJSReact from '@canvasjs/react-charts';
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 function BarChart({ data }) {
+  const typeCounts = data.reduce(
+    (counts, title) => {
+      counts[title.type] = (counts[title.type] || 0) + 1;
+      return counts;
+    },
+    { Movie: 0, 'TV Show': 0 },
+  );
+
   const options = {
     animationEnabled: true,
-    theme: "light2",
-    title: { 
-      text: "Daily Temperature Comparison (Sampled)", 
-      fontColor: "#1f2937", 
-      fontWeight: "bold",
-      fontSize: 20
+    backgroundColor: 'transparent',
+    theme: 'light2',
+    title: {
+      text: 'Movies vs TV Shows',
+      fontFamily: 'inherit',
+      fontSize: 20,
+      fontWeight: '600',
     },
-    axisY: { 
-      title: "Temperature (C)",
-      gridThickness: 0.5
+    axisY: {
+      title: 'Total Titles',
+      labelFontColor: '#64748b',
+      titleFontColor: '#475569',
+      gridColor: '#e2e8f0',
     },
     axisX: {
-      labelAngle: -45,
-      labelFontSize: 10
+      labelFontColor: '#64748b',
+      tickThickness: 0,
+      lineThickness: 0,
     },
-    data: [{
-      type: "column",
-      color: "#f97316",
-      dataPoints: data.slice(0, 15).map(d => ({ label: d.date.toLocaleDateString(), y: d.temperature }))
-    }]
+    data: [
+      {
+        type: 'column',
+        colorSet: 'netflixBars',
+        dataPoints: [
+          { label: 'Movie', y: typeCounts.Movie || 0, color: '#f97316' },
+          { label: 'TV Show', y: typeCounts['TV Show'] || 0, color: '#0f172a' },
+        ],
+      },
+    ],
   };
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 lg:col-span-2">
+    <section className="rounded-[30px] border border-white/60 bg-white/85 p-5 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur sm:p-6">
       <CanvasJSChart options={options} />
-    </div>
+    </section>
   );
 }
 
