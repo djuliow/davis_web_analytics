@@ -5,7 +5,7 @@ const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 // Warna gradasi (lebih clean & profesional)
 const BAR_COLORS = [
-  '#1e3a8a', // biru tua
+  '#1e3a8a',
   '#1d4ed8',
   '#2563eb',
   '#3b82f6',
@@ -37,15 +37,15 @@ function BarChart({ data = [] }) {
       (a, b) => b[1] - a[1]
     );
 
-    // Ambil Top 8 saja (tanpa Others)
+    // Ambil Top 8
     const topGenres = sortedGenres.slice(0, 8);
 
-    // Insight (lebih tajam)
+    // Insight versi Indonesia
     const topGenreNames = topGenres.slice(0, 3).map(([genre]) => genre);
 
     const chartInsight = topGenreNames.length
-      ? `${topGenreNames.join(', ')} are the most dominant genres, indicating that Netflix prioritizes globally appealing and high-demand content categories.`
-      : 'Genre distribution will appear after the dataset is loaded.';
+      ? `${topGenreNames.join(', ')} merupakan genre yang paling dominan, menunjukkan bahwa Netflix memprioritaskan kategori konten dengan permintaan tinggi dan daya tarik global.`
+      : 'Distribusi genre akan muncul setelah dataset dimuat.';
 
     return {
       dataPoints: topGenres.map(([genre, count], index) => ({
@@ -63,7 +63,7 @@ function BarChart({ data = [] }) {
     backgroundColor: 'transparent',
     theme: 'light2',
     title: {
-      text: 'Top Genres Distribution',
+      text: 'Distribusi Genre Teratas',
       fontFamily: 'inherit',
       fontSize: 20,
       fontWeight: '600',
@@ -76,14 +76,14 @@ function BarChart({ data = [] }) {
       lineThickness: 0,
     },
     axisY: {
-      title: 'Number of Titles',
+      title: 'Jumlah Judul',
       includeZero: true,
       labelFontColor: '#64748b',
       titleFontColor: '#475569',
       gridColor: '#e2e8f0',
     },
     toolTip: {
-      content: '<b>{label}</b>: {y} titles',
+      content: '<b>{label}</b>: {y} judul',
       cornerRadius: 10,
     },
     data: [

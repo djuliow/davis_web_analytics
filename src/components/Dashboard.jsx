@@ -6,12 +6,12 @@ import BarChart from './BarChart';
 import PieChart from './PieChart';
 import DataTable from './DataTable';
 
-const TYPE_OPTIONS = ['All', 'Movie', 'TV Show'];
+const TYPE_OPTIONS = ['Semua', 'Film', 'Acara TV'];
 
 function Dashboard() {
   const [titles, setTitles] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [typeFilter, setTypeFilter] = useState('All');
+  const [typeFilter, setTypeFilter] = useState('Semua');
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -24,17 +24,17 @@ function Dashboard() {
           .filter((row) => row.show_id && row.title)
           .map((row) => ({
             showId: row.show_id,
-            type: row.type?.trim() || 'Unknown',
-            title: row.title?.trim() || 'Untitled',
-            country: row.country?.trim() || 'Unknown',
-            rating: row.rating?.trim() || 'Unrated',
+            type: row.type?.trim() || 'Tidak diketahui',
+            title: row.title?.trim() || 'Tanpa judul',
+            country: row.country?.trim() || 'Tidak diketahui',
+            rating: row.rating?.trim() || 'Tanpa rating',
             releaseYear: Number(row.release_year) || null,
             genres: row.listed_in
               ? row.listed_in
                   .split(',')
                   .map((genre) => genre.trim())
                   .filter(Boolean)
-              : ['Uncategorized'],
+              : ['Tidak berkategori'],
           }))
           .filter((row) => row.releaseYear);
 
@@ -42,18 +42,23 @@ function Dashboard() {
         setLoading(false);
       },
       error: () => {
-        setError('Failed to load Netflix dataset.');
+        setError('Gagal memuat dataset Netflix.');
         setLoading(false);
       },
     });
   }, []);
 
   const filteredTitles = useMemo(() => {
-    if (typeFilter === 'All') {
+    if (typeFilter === 'Semua') {
       return titles;
     }
 
-    return titles.filter((title) => title.type === typeFilter);
+    // Mapping balik ke data asli (Movie / TV Show)
+    return titles.filter((title) =>
+      typeFilter === 'Film'
+        ? title.type === 'Movie'
+        : title.type === 'TV Show'
+    );
   }, [titles, typeFilter]);
 
   const kpis = useMemo(() => {
@@ -87,7 +92,7 @@ function Dashboard() {
         <div className="rounded-[32px] border border-white/70 bg-white/80 px-8 py-10 text-center shadow-[0_24px_80px_rgba(15,23,42,0.12)] backdrop-blur">
           <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-rose-500 border-t-transparent" />
           <p className="mt-5 text-sm font-medium tracking-[0.22em] text-slate-500 uppercase">
-            Parsing Netflix catalog
+            Memproses katalog Netflix
           </p>
         </div>
       </div>
@@ -111,13 +116,13 @@ function Dashboard() {
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-amber-300">
-                Streaming intelligence
+                Analisis Streaming
               </p>
               <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
-                Netflix Titles Dashboard
+                Dashboard Analitik Netflix
               </h1>
               <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
-                Explore catalog growth, content mix, rating distribution, and searchable title-level details from the Netflix dataset.
+                Jelajahi pertumbuhan katalog, komposisi konten, distribusi rating, dan detail judul Netflix secara interaktif.
               </p>
             </div>
 
@@ -148,22 +153,22 @@ function Dashboard() {
 
         <section className="mt-8 grid gap-5 md:grid-cols-3">
           <KPI
-            label="Total Titles"
+            label="Total Judul"
             value={kpis.totalTitles}
             accent="text-rose-600"
-            helper="Visible records after the active content-type filter."
+            helper="Jumlah judul data yang tampil."
           />
           <KPI
-            label="Average Titles / Year"
+            label="Rata-rata Judul / Tahun"
             value={kpis.averageTitlesPerYear}
             accent="text-amber-600"
-            helper="Average release volume across unique release years."
+            helper="Rata-rata jumlah rilis judul berdasarkan tahun."
           />
           <KPI
-            label="Most Common Genre"
+            label="Genre Terpopuler"
             value={kpis.mostCommonGenre}
             accent="text-sky-700"
-            helper="Top genre tag across the filtered catalog selection."
+            helper="Genre dengan jumlah terbanyak pada data."
           />
         </section>
 

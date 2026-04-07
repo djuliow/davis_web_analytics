@@ -4,7 +4,7 @@ import CanvasJSReact from '@canvasjs/react-charts';
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 function PieChart({ data = [] }) {
-  // Hitung jumlah per negara (tanpa null/unknown)
+  // Hitung jumlah per negara (tanpa null/tidak diketahui)
   const countryCounts = data.reduce((counts, title) => {
     if (!title?.country || title.country === "Unknown") return counts;
 
@@ -21,10 +21,10 @@ function PieChart({ data = [] }) {
     return counts;
   }, {});
 
-  // Sorting
+  // Sorting dari terbesar ke terkecil
   const sorted = Object.entries(countryCounts).sort((a, b) => b[1] - a[1]);
 
-  // Top 4 + Others
+  // Ambil Top 4 + Lainnya
   const topCountries = sorted.slice(0, 4);
   const others = sorted.slice(4);
 
@@ -42,7 +42,7 @@ function PieChart({ data = [] }) {
     ...(othersCount > 0
       ? [
           {
-            label: "Others",
+            label: "Lainnya",
             y: othersCount,
             color: colors[4],
           },
@@ -56,13 +56,13 @@ function PieChart({ data = [] }) {
     theme: 'light2',
 
     title: {
-      text: 'Top Countries Distribution',
+      text: 'Distribusi Negara Teratas',
       fontFamily: 'inherit',
       fontSize: 20,
       fontWeight: '600',
     },
 
-    // ❌ Hilangkan legend default (DataPoint)
+    // ❌ Hilangkan legend default
     legend: {
       enabled: false,
     },
@@ -83,7 +83,7 @@ function PieChart({ data = [] }) {
         indexLabelFontSize: 12,
         indexLabelFontColor: '#334155',
 
-        toolTipContent: '<b>{label}</b>: {y} titles',
+        toolTipContent: '<b>{label}</b>: {y} judul',
 
         dataPoints: dataPoints,
       },
@@ -101,7 +101,7 @@ function PieChart({ data = [] }) {
 
       {/* Insight */}
       <p className="mt-4 text-sm text-gray-600">
-        Content production is concentrated in a few key countries, with the United States dominating the catalog, followed by other major contributors.
+        Produksi konten terkonsentrasi di beberapa negara utama, dengan Amerika Serikat mendominasi katalog, diikuti oleh kontributor besar lainnya.
       </p>
     </section>
   );

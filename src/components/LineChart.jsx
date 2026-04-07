@@ -4,7 +4,7 @@ import CanvasJSReact from '@canvasjs/react-charts';
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 function LineChart({ data = [] }) {
-  // Hitung jumlah title per tahun (2000–2020 saja)
+  // Hitung jumlah judul per tahun (2000–2020 saja)
   const releasesByYear = data.reduce((counts, title) => {
     const year = Number(title?.releaseYear);
 
@@ -29,13 +29,13 @@ function LineChart({ data = [] }) {
     backgroundColor: 'transparent',
     theme: 'light2',
     title: {
-      text: 'Titles by Release Year (2000–2020)',
+      text: 'Jumlah Judul Berdasarkan Tahun Rilis (2000–2020)',
       fontFamily: 'inherit',
       fontSize: 20,
       fontWeight: '600',
     },
     axisX: {
-      title: 'Release Year',
+      title: 'Tahun Rilis',
       interval: 5,
       minimum: 2000,
       maximum: 2020,
@@ -44,13 +44,14 @@ function LineChart({ data = [] }) {
       gridThickness: 0,
     },
     axisY: {
-      title: 'Number of Titles',
+      title: 'Jumlah Judul',
       labelFontColor: '#64748b',
       titleFontColor: '#475569',
       gridColor: '#e2e8f0',
       tickColor: '#cbd5e1',
     },
     toolTip: {
+      content: 'Tahun {x}: {y} judul',
       cornerRadius: 10,
     },
     data: [
