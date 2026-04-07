@@ -21,17 +21,17 @@ function PieChart({ data = [] }) {
     return counts;
   }, {});
 
-  // Sorting + ambil Top 4
+  // Sorting
   const sorted = Object.entries(countryCounts).sort((a, b) => b[1] - a[1]);
 
+  // Top 4 + Others
   const topCountries = sorted.slice(0, 4);
   const others = sorted.slice(4);
 
-  // Hitung Others
   const othersCount = others.reduce((sum, [, count]) => sum + count, 0);
 
-  // Warna custom (lebih profesional)
-  const colors = ["#ef4444", "#3b82f6", "#10b981", "#f59e0b", "#6b7280"];
+  // Warna kontras (tidak terlalu terang)
+  const colors = ["#1e3a8a", "#2563eb", "#06b6d4", "#10b981", "#6b7280"];
 
   const dataPoints = [
     ...topCountries.map(([country, count], index) => ({
@@ -54,32 +54,50 @@ function PieChart({ data = [] }) {
     animationEnabled: true,
     backgroundColor: 'transparent',
     theme: 'light2',
+
     title: {
       text: 'Top Countries Distribution',
       fontFamily: 'inherit',
       fontSize: 20,
       fontWeight: '600',
     },
+
+    // ❌ Hilangkan legend default (DataPoint)
     legend: {
-      verticalAlign: 'bottom',
-      horizontalAlign: 'center',
-      fontSize: 12,
+      enabled: false,
     },
+
     data: [
       {
         type: 'pie',
         startAngle: 240,
-        showInLegend: true,
-        toolTipContent: '<b>{label}</b>: {y} titles',
+
+        // 🔥 Perbesar pie
+        radius: '80%',
+
+        // 🔥 Geser ke atas supaya tidak kena watermark
+        centerY: '45%',
+
+        // 🔥 Label lebih clean
         indexLabel: '{label} ({y})',
+        indexLabelFontSize: 12,
+        indexLabelFontColor: '#334155',
+
+        toolTipContent: '<b>{label}</b>: {y} titles',
+
         dataPoints: dataPoints,
       },
     ],
   };
 
   return (
-    <section className="rounded-[30px] border border-white/60 bg-white/85 p-5 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur sm:p-6">
-      <CanvasJSChart options={options} />
+    <section className="rounded-[30px] border border-white/60 bg-white/90 p-6 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur">
+      
+      {/* 🔥 FIX HEIGHT (WAJIB) */}
+      <CanvasJSChart 
+        options={options} 
+        containerProps={{ height: '360px' }} 
+      />
 
       {/* Insight */}
       <p className="mt-4 text-sm text-gray-600">
