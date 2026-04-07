@@ -1,15 +1,24 @@
+import React from 'react';
 import CanvasJSReact from '@canvasjs/react-charts';
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-function LineChart({ data }) {
+function LineChart({ data = [] }) {
+  // Hitung jumlah title per tahun (2000–2020 saja)
   const releasesByYear = data.reduce((counts, title) => {
-    counts[title.releaseYear] = (counts[title.releaseYear] || 0) + 1;
+    const year = Number(title?.releaseYear);
+
+    // validasi + filter range tahun
+    if (!isNaN(year) && year >= 2000 && year <= 2020) {
+      counts[year] = (counts[year] || 0) + 1;
+    }
+
     return counts;
   }, {});
 
+  // Ubah ke format dataPoints CanvasJS
   const dataPoints = Object.entries(releasesByYear)
-    .sort((left, right) => Number(left[0]) - Number(right[0]))
+    .sort((a, b) => Number(a[0]) - Number(b[0]))
     .map(([year, count]) => ({
       x: Number(year),
       y: count,
@@ -20,7 +29,7 @@ function LineChart({ data }) {
     backgroundColor: 'transparent',
     theme: 'light2',
     title: {
-      text: 'Titles by Release Year',
+      text: 'Titles by Release Year (2000–2020)',
       fontFamily: 'inherit',
       fontSize: 20,
       fontWeight: '600',
@@ -28,6 +37,8 @@ function LineChart({ data }) {
     axisX: {
       title: 'Release Year',
       interval: 5,
+      minimum: 2000,
+      maximum: 2020,
       labelFontColor: '#64748b',
       titleFontColor: '#475569',
       gridThickness: 0,
@@ -48,7 +59,7 @@ function LineChart({ data }) {
         color: '#e11d48',
         lineThickness: 3,
         markerSize: 6,
-        dataPoints,
+        dataPoints: dataPoints,
       },
     ],
   };

@@ -1,18 +1,33 @@
+import React from 'react';
 import CanvasJSReact from '@canvasjs/react-charts';
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-function PieChart({ data }) {
-  const ratingCounts = data.reduce((counts, title) => {
-    counts[title.rating] = (counts[title.rating] || 0) + 1;
+function PieChart({ data = [] }) {
+  // Hitung jumlah per negara
+  const countryCounts = data.reduce((counts, title) => {
+    if (!title?.country) return counts;
+
+    // Pisahkan jika ada lebih dari 1 negara
+    const countries = title.country.split(',');
+
+    countries.forEach((country) => {
+      const cleanCountry = country.trim();
+
+      if (cleanCountry) {
+        counts[cleanCountry] = (counts[cleanCountry] || 0) + 1;
+      }
+    });
+
     return counts;
   }, {});
 
-  const dataPoints = Object.entries(ratingCounts)
-    .sort((left, right) => right[1] - left[1])
-    .slice(0, 8)
-    .map(([rating, count]) => ({
-      label: rating,
+  // Ambil Top 5 negara
+  const dataPoints = Object.entries(countryCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([country, count]) => ({
+      label: country,
       y: count,
     }));
 
@@ -21,7 +36,7 @@ function PieChart({ data }) {
     backgroundColor: 'transparent',
     theme: 'light2',
     title: {
-      text: 'Ratings Distribution',
+      text: 'Top 5 Countries Distribution',
       fontFamily: 'inherit',
       fontSize: 20,
       fontWeight: '600',
@@ -38,7 +53,7 @@ function PieChart({ data }) {
         showInLegend: true,
         toolTipContent: '<b>{label}</b>: {y} titles',
         indexLabel: '{label}',
-        dataPoints,
+        dataPoints: dataPoints,
       },
     ],
   };
