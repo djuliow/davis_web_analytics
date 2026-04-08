@@ -5,14 +5,14 @@ const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 // Warna gradasi (lebih clean & profesional)
 const BAR_COLORS = [
-  '#1e3a8a',
-  '#1d4ed8',
-  '#2563eb',
+  '#60a5fa',
   '#3b82f6',
-  '#0284c7',
+  '#2563eb',
+  '#1d4ed8',
+  '#38bdf8',
   '#0ea5e9',
-  '#0891b2',
-  '#0f766e',
+  '#22d3ee',
+  '#06b6d4',
 ];
 
 function BarChart({ data = [] }) {
@@ -61,7 +61,7 @@ function BarChart({ data = [] }) {
   const options = {
     animationEnabled: true,
     backgroundColor: 'transparent',
-    theme: 'light2',
+    theme: 'dark2',
     title: {
       text: 'Distribusi Genre Teratas',
       fontFamily: 'inherit',
@@ -69,7 +69,7 @@ function BarChart({ data = [] }) {
       fontWeight: '600',
     },
     axisX: {
-      labelFontColor: '#475569',
+      labelFontColor: '#cbd5e1',
       labelFontSize: 12,
       labelMaxWidth: 170,
       tickThickness: 0,
@@ -78,9 +78,9 @@ function BarChart({ data = [] }) {
     axisY: {
       title: 'Jumlah Judul',
       includeZero: true,
-      labelFontColor: '#64748b',
-      titleFontColor: '#475569',
-      gridColor: '#e2e8f0',
+      labelFontColor: '#94a3b8',
+      titleFontColor: '#cbd5e1',
+      gridColor: '#334155',
     },
     toolTip: {
       content: '<b>{label}</b>: {y} judul',
@@ -90,7 +90,7 @@ function BarChart({ data = [] }) {
       {
         type: 'bar',
         indexLabel: '{indexLabel}',
-        indexLabelFontColor: '#0f172a',
+        indexLabelFontColor: '#f8fafc',
         indexLabelFontWeight: '600',
         dataPoints,
       },
@@ -98,12 +98,12 @@ function BarChart({ data = [] }) {
   };
 
   return (
-    <section className="rounded-[30px] border border-white/60 bg-white/85 p-5 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur sm:p-6">
+    <section className="rounded-[30px] border border-slate-800 bg-slate-900/60 p-5 shadow-[0_20px_60px_rgba(0,0,0,0.2)] backdrop-blur sm:p-6">
       <CanvasJSChart options={options} />
 
       {/* Insight */}
-      <p className="mt-5 rounded-2xl bg-rose-50 px-4 py-3 text-sm leading-6 text-slate-600">
-        <span className="font-bold text-slate-900">Insight:</span> {insight}
+      <p className="mt-5 rounded-2xl bg-slate-800/50 px-4 py-3 text-sm leading-6 text-slate-300">
+        <span className="font-bold text-rose-400">Insight:</span> {insight}
       </p>
     </section>
   );

@@ -2,19 +2,22 @@ import { useMemo } from 'react';
 import CanvasJSReact from '@canvasjs/react-charts';
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
-const COLORS = ['#1e3a8a', '#2563eb', '#06b6d4', '#10b981', '#6b7280'];
+const COLORS = ['#3b82f6', '#0ea5e9', '#06b6d4', '#10b981', '#64748b'];
 
 function PieChart({ data = [] }) {
   const { dataPoints, insight } = useMemo(() => {
     const countryCounts = data.reduce((counts, title) => {
-      if (!title?.country || title.country === 'Unknown') {
+      if (!title?.country) {
+        counts['Negara Lain'] = (counts['Negara Lain'] || 0) + 1;
         return counts;
       }
 
       title.country.split(',').forEach((country) => {
         const cleanCountry = country.trim();
 
-        if (cleanCountry && cleanCountry !== 'Unknown') {
+        if (cleanCountry === 'Unknown' || cleanCountry === 'Tidak diketahui') {
+          counts['Negara Lain'] = (counts['Negara Lain'] || 0) + 1;
+        } else if (cleanCountry) {
           counts[cleanCountry] = (counts[cleanCountry] || 0) + 1;
         }
       });
@@ -66,7 +69,7 @@ function PieChart({ data = [] }) {
   const options = {
     animationEnabled: true,
     backgroundColor: 'transparent',
-    theme: 'light2',
+    theme: 'dark2',
     title: {
       text: 'Distribusi Negara Teratas',
       fontFamily: 'inherit',
@@ -84,7 +87,7 @@ function PieChart({ data = [] }) {
         centerY: '45%',
         indexLabel: '{label} ({y})',
         indexLabelFontSize: 12,
-        indexLabelFontColor: '#334155',
+        indexLabelFontColor: '#cbd5e1',
         toolTipContent: '<b>{label}</b>: {y} judul',
         dataPoints,
       },
@@ -92,10 +95,10 @@ function PieChart({ data = [] }) {
   };
 
   return (
-    <section className="rounded-[30px] border border-white/60 bg-white/90 p-6 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur">
+    <section className="rounded-[30px] border border-slate-800 bg-slate-900/60 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.2)] backdrop-blur">
       <CanvasJSChart options={options} containerProps={{ height: '360px' }} />
-      <p className="mt-5 rounded-2xl bg-rose-50 px-4 py-3 text-sm leading-6 text-slate-600">
-        <span className="font-bold text-slate-900">Insight:</span> {insight}
+      <p className="mt-5 rounded-2xl bg-slate-800/50 px-4 py-3 text-sm leading-6 text-slate-300">
+        <span className="font-bold text-rose-400">Insight:</span> {insight}
       </p>
     </section>
   );

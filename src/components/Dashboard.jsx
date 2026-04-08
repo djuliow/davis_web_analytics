@@ -5,6 +5,7 @@ import LineChart from './LineChart';
 import BarChart from './BarChart';
 import PieChart from './PieChart';
 import DataTable from './DataTable';
+import DataInsightCard from './DataInsightCard';
 
 const TYPE_OPTIONS = ['Semua', 'Film', 'Acara TV'];
 
@@ -65,8 +66,8 @@ function Dashboard() {
     const totalTitles = filteredTitles.length;
     const years = new Set(filteredTitles.map((title) => title.releaseYear));
     const averageTitlesPerYear = years.size
-      ? (totalTitles / years.size).toFixed(1)
-      : '0.0';
+      ? Math.round(totalTitles / years.size).toString()
+      : '0';
 
     const genreCounts = filteredTitles.reduce((counts, title) => {
       title.genres.forEach((genre) => {
@@ -88,10 +89,10 @@ function Dashboard() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_#ffe4e6,_#fff7ed_38%,_#f8fafc_78%)] px-6">
-        <div className="rounded-[32px] border border-white/70 bg-white/80 px-8 py-10 text-center shadow-[0_24px_80px_rgba(15,23,42,0.12)] backdrop-blur">
+      <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_#1e1b4b,_#0f172a_38%,_#020617_78%)] px-6">
+        <div className="rounded-[32px] border border-slate-800 bg-slate-900/80 px-8 py-10 text-center shadow-[0_24px_80px_rgba(0,0,0,0.4)] backdrop-blur">
           <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-rose-500 border-t-transparent" />
-          <p className="mt-5 text-sm font-medium tracking-[0.22em] text-slate-500 uppercase">
+          <p className="mt-5 text-sm font-medium tracking-[0.22em] text-slate-400 uppercase">
             Memproses katalog Netflix
           </p>
         </div>
@@ -102,17 +103,17 @@ function Dashboard() {
   if (error) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-950 px-6">
-        <div className="rounded-3xl border border-rose-200 bg-white px-8 py-10 text-center shadow-xl">
-          <p className="text-lg font-semibold text-slate-900">{error}</p>
+        <div className="rounded-3xl border border-rose-900/50 bg-slate-900 px-8 py-10 text-center shadow-xl">
+          <p className="text-lg font-semibold text-slate-200">{error}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_#ffe4e6,_transparent_28%),radial-gradient(circle_at_top_right,_#fde68a,_transparent_24%),linear-gradient(180deg,_#fffaf5_0%,_#f8fafc_52%,_#eef2ff_100%)] text-slate-900">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_#1e1b4b,_transparent_28%),radial-gradient(circle_at_top_right,_#312e81,_transparent_24%),linear-gradient(180deg,_#0f172a_0%,_#020617_52%,_#020617_100%)] text-slate-200">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-        <header className="rounded-[36px] border border-white/60 bg-slate-950 px-6 py-8 text-white shadow-[0_24px_80px_rgba(15,23,42,0.22)] sm:px-8 lg:px-10">
+        <header className="rounded-[36px] border border-slate-700/50 bg-slate-950/80 px-6 py-8 text-white shadow-[0_24px_80px_rgba(0,0,0,0.5)] backdrop-blur sm:px-8 lg:px-10">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-amber-300">
@@ -155,19 +156,19 @@ function Dashboard() {
           <KPI
             label="Total Judul"
             value={kpis.totalTitles}
-            accent="text-rose-600"
+            accent="text-rose-400"
             helper="Jumlah judul data yang tampil."
           />
           <KPI
             label="Rata-rata Judul / Tahun"
             value={kpis.averageTitlesPerYear}
-            accent="text-amber-600"
+            accent="text-amber-400"
             helper="Rata-rata jumlah rilis judul berdasarkan tahun."
           />
           <KPI
             label="Genre Terpopuler"
             value={kpis.mostCommonGenre}
-            accent="text-sky-700"
+            accent="text-sky-400"
             helper="Genre dengan jumlah terbanyak pada data."
           />
         </section>
@@ -180,6 +181,10 @@ function Dashboard() {
         <section className="mt-6 grid gap-6 xl:grid-cols-[0.95fr_1.45fr]">
           <PieChart data={filteredTitles} />
           <DataTable data={filteredTitles} />
+        </section>
+
+        <section className="mt-8">
+          <DataInsightCard data={filteredTitles} />
         </section>
       </div>
     </div>

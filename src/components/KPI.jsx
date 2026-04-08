@@ -1,6 +1,6 @@
-function KPI({ label, value, accent = "text-slate-900", helper, icon }) {
+function KPI({ label, value, accent = "text-white", helper, icon }) {
   return (
-    <article className="group rounded-[28px] border border-white/60 bg-white/90 p-6 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur transition hover:shadow-[0_25px_70px_rgba(15,23,42,0.12)]">
+    <article className="group rounded-[28px] border border-slate-800 bg-slate-900/60 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.2)] backdrop-blur transition hover:shadow-[0_25px_70px_rgba(0,0,0,0.3)] hover:bg-slate-900/80">
       
       {/* Header */}
       <div className="flex items-center justify-between">
@@ -10,7 +10,7 @@ function KPI({ label, value, accent = "text-slate-900", helper, icon }) {
 
         {/* Optional Icon */}
         {icon && (
-          <div className="text-slate-400 group-hover:text-slate-600">
+          <div className="text-slate-500 group-hover:text-slate-300">
             {icon}
           </div>
         )}
@@ -23,7 +23,7 @@ function KPI({ label, value, accent = "text-slate-900", helper, icon }) {
 
       {/* Helper */}
       {helper && (
-        <p className="mt-3 text-sm leading-relaxed text-slate-500">
+        <p className="mt-3 text-sm leading-relaxed text-slate-500 group-hover:text-slate-400">
           {helper}
         </p>
       )}

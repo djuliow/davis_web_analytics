@@ -46,7 +46,7 @@ function LineChart({ data = [] }) {
   const options = {
     animationEnabled: true,
     backgroundColor: 'transparent',
-    theme: 'light2',
+    theme: 'dark2',
     title: {
       text: 'Jumlah Judul Berdasarkan Tahun Rilis (2000-2020)',
       fontFamily: 'inherit',
@@ -58,16 +58,16 @@ function LineChart({ data = [] }) {
       interval: 5,
       minimum: 2000,
       maximum: 2020,
-      labelFontColor: '#64748b',
-      titleFontColor: '#475569',
+      labelFontColor: '#94a3b8',
+      titleFontColor: '#cbd5e1',
       gridThickness: 0,
     },
     axisY: {
       title: 'Jumlah Judul',
-      labelFontColor: '#64748b',
-      titleFontColor: '#475569',
-      gridColor: '#e2e8f0',
-      tickColor: '#cbd5e1',
+      labelFontColor: '#94a3b8',
+      titleFontColor: '#cbd5e1',
+      gridColor: '#334155',
+      tickColor: '#475569',
     },
     toolTip: {
       content: 'Tahun {x}: {y} judul',
@@ -85,10 +85,10 @@ function LineChart({ data = [] }) {
   };
 
   return (
-    <section className="rounded-[30px] border border-white/60 bg-white/85 p-5 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur sm:p-6">
+    <section className="rounded-[30px] border border-slate-800 bg-slate-900/60 p-5 shadow-[0_20px_60px_rgba(0,0,0,0.2)] backdrop-blur sm:p-6">
       <CanvasJSChart options={options} />
-      <p className="mt-5 rounded-2xl bg-rose-50 px-4 py-3 text-sm leading-6 text-slate-600">
-        <span className="font-bold text-slate-900">Insight:</span> {insight}
+      <p className="mt-5 rounded-2xl bg-slate-800/50 px-4 py-3 text-sm leading-6 text-slate-300">
+        <span className="font-bold text-rose-400">Insight:</span> {insight}
       </p>
     </section>
   );
